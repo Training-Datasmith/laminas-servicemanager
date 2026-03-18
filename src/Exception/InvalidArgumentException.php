@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Exception;
 
+use function get_debug_type;
+
 use InvalidArgumentException as SplInvalidArgumentException;
+
 use Laminas\ServiceManager\Initializer\InitializerInterface;
 
-use function get_debug_type;
 use function sprintf;
 
 /**

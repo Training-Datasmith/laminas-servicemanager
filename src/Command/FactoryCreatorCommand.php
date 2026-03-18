@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Command;
 
+use function assert;
+use function class_exists;
+use function is_string;
+
 use Laminas\ServiceManager\Exception;
 use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
+
+use function sprintf;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use function assert;
-use function class_exists;
-use function is_string;
-use function sprintf;
 
 /**
  * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.

@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
+use function array_pop;
+use function count;
+use function file_get_contents;
+use function func_get_args;
+use function is_array;
+
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
 use Laminas\ServiceManager\Tool\FactoryCreator;
 use LaminasTest\ServiceManager\TestAsset\ComplexDependencyObject;
@@ -11,20 +17,18 @@ use LaminasTest\ServiceManager\TestAsset\DelegatorAndAliasBehaviorTest\TargetObj
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SecondComplexDependencyObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
+
+use const PHP_EOL;
+
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
-use stdClass;
 
-use function array_pop;
-use function count;
-use function file_get_contents;
-use function func_get_args;
-use function is_array;
 use function preg_match;
 
-use const PHP_EOL;
+use Psr\Container\ContainerInterface;
+
+use stdClass;
 
 #[CoversClass(FactoryCreator::class)]
 final class FactoryCreatorTest extends TestCase

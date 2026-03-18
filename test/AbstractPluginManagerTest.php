@@ -1,5 +1,6 @@
-<?php // phpcs:disable Generic.Files.LineLength.TooLong
+<?php
 
+// phpcs:disable Generic.Files.LineLength.TooLong
 
 declare(strict_types=1);
 

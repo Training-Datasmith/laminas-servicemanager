@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
-use Mezzio\Application;
-use Psr\Container\ContainerInterface;
-
 use function class_exists;
+
+use Mezzio\Application;
+
+use Psr\Container\ContainerInterface;
 
 /**
  * @internal

@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Command;
 
-use Laminas\ServiceManager\ConfigProvider;
-use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
-use Psr\Container\ContainerInterface;
-
 use function assert;
 use function is_array;
 use function is_iterable;
+
 use function is_string;
 use function iterator_to_array;
+
+use Laminas\ServiceManager\ConfigProvider;
+use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
+use Psr\Container\ContainerInterface;
 
 final class AheadOfTimeFactoryCreatorCommandFactory
 {

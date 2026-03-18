@@ -16,7 +16,7 @@ final class ServiceManagerConfiguration
 
         new ServiceManager([
             'factories' => [
-                'Foo' => static fn (): object => new class {
+                'Foo' => static fn (): object => new class () {
                 },
             ],
         ]);

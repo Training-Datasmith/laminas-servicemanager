@@ -4,7 +4,19 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
+use function array_intersect;
+use function array_key_exists;
+use function array_keys;
+use function array_merge;
+use function class_exists;
+
 use Exception;
+
+use function in_array;
+use function is_array;
+use function is_callable;
+use function is_string;
+
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
@@ -16,6 +28,7 @@ use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
+
 use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use Laminas\Stdlib\ArrayUtils;
 use ProxyManager\Configuration as ProxyConfiguration;
@@ -26,15 +39,6 @@ use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-use function array_intersect;
-use function array_key_exists;
-use function array_keys;
-use function array_merge;
-use function class_exists;
-use function in_array;
-use function is_array;
-use function is_callable;
-use function is_string;
 use function spl_autoload_register;
 use function spl_object_hash;
 use function sprintf;
@@ -606,7 +610,7 @@ class ServiceManager implements ServiceLocatorInterface
             $delegatorFactory                = $this->resolveDelegatorFactory($delegatorFactory);
             $this->delegators[$name][$index] = $delegatorFactory;
             $creationCallback                =
-                static fn(): mixed => $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
+                static fn (): mixed => $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
         }
 
         $this->delegators[$name] = $resolvedDelegators;

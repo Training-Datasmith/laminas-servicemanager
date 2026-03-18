@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
+use function array_fill_keys;
+use function array_keys;
+use function array_merge;
+use function assert;
+
 use DateTime;
+
+use function in_array;
+
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
@@ -26,17 +34,12 @@ use LaminasTest\ServiceManager\TestAsset\SampleFactory;
 use LaminasTest\ServiceManager\TestAsset\SimpleAbstractFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Depends;
+
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use stdClass;
-
-use function array_fill_keys;
-use function array_keys;
-use function array_merge;
-use function assert;
-use function in_array;
 
 /**
  * @see TestCase

@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Test;
 
+use function assert;
+use function is_string;
+
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\Attributes\DataProvider;
+
 use ReflectionProperty;
 use stdClass;
-
-use function assert;
-use function is_string;
 
 /**
  * Trait for testing plugin managers for compatibility

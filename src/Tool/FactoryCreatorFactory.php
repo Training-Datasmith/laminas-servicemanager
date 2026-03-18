@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
-use Psr\Container\ContainerInterface;
-
 use function assert;
+
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
+
+use Psr\Container\ContainerInterface;
 
 /**
  * @internal

@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Command;
 
-use Brick\VarExporter\VarExporter;
-use Laminas\ServiceManager\ConfigProvider;
-use Laminas\ServiceManager\Exception\RuntimeException;
-use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceManager;
-use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use function assert;
+
+use Brick\VarExporter\VarExporter;
+
 use function class_exists;
 use function count;
 use function dirname;
@@ -23,10 +15,23 @@ use function file_put_contents;
 use function is_dir;
 use function is_string;
 use function is_writable;
+
+use Laminas\ServiceManager\ConfigProvider;
+
+use Laminas\ServiceManager\Exception\RuntimeException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
+
 use function mkdir;
 use function preg_replace;
 use function sprintf;
 use function str_replace;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.

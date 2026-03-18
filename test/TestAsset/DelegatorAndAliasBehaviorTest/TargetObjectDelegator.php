@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset\DelegatorAndAliasBehaviorTest;
 
-use Psr\Container\ContainerInterface;
-
 use function assert;
+
+use Psr\Container\ContainerInterface;
 
 final class TargetObjectDelegator
 {

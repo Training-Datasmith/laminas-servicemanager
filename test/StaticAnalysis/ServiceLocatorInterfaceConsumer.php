@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\StaticAnalysis;
 
-use DateTimeImmutable;
-use Laminas\ServiceManager\ServiceLocatorInterface;
-
 use function assert;
+
+use DateTimeImmutable;
+
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 final class ServiceLocatorInterfaceConsumer
 {

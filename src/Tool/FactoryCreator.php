@@ -4,28 +4,35 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
-use Brick\VarExporter\VarExporter;
-use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ServiceFromContainerConstructorParameter;
-use Psr\Container\ContainerInterface;
-
 use function array_map;
 use function array_shift;
 use function assert;
+
+use Brick\VarExporter\VarExporter;
+
 use function class_exists;
+
 use function count;
 use function implode;
 use function is_string;
+
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ServiceFromContainerConstructorParameter;
+
+use const PHP_EOL;
+
 use function preg_replace;
+
+use Psr\Container\ContainerInterface;
+
 use function sort;
 use function sprintf;
 use function str_contains;
 use function str_repeat;
 use function strrpos;
-use function substr;
 
-use const PHP_EOL;
+use function substr;
 
 /**
  * @internal
@@ -134,7 +141,7 @@ final readonly class FactoryCreator implements FactoryCreatorInterface
     private function createArgumentString(string $className, array $aliases): string
     {
         $arguments = array_map(
-            static fn(string $dependency): string
+            static fn (string $dependency): string
             => sprintf('%s', $dependency),
             $this->getConstructorParameters($className, $aliases)
         );
@@ -160,7 +167,7 @@ final readonly class FactoryCreator implements FactoryCreatorInterface
     {
         $imports = self::IMPORT_ALWAYS;
         sort($imports);
-        return implode("\n", array_map(static fn(string $import): string => sprintf('use %s;', $import), $imports));
+        return implode("\n", array_map(static fn (string $import): string => sprintf('use %s;', $import), $imports));
     }
 
     private function export(mixed $value): string

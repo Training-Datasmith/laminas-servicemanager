@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
+use function class_exists;
+
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
@@ -12,9 +14,9 @@ use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
 use Laminas\Stdlib\ArrayUtils;
+
 use Psr\Container\ContainerInterface;
 
-use function class_exists;
 use function sprintf;
 
 /**

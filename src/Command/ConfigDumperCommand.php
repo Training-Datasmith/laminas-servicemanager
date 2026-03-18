@@ -4,25 +4,30 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Command;
 
-use InvalidArgumentException;
-use Laminas\ServiceManager\Exception;
-use Laminas\ServiceManager\Tool\ConfigDumperInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use function array_keys;
 use function assert;
 use function class_exists;
 use function dirname;
 use function file_exists;
 use function file_put_contents;
+
+use InvalidArgumentException;
+
 use function is_array;
+
 use function is_string;
 use function is_writable;
+
+use Laminas\ServiceManager\Exception;
+use Laminas\ServiceManager\Tool\ConfigDumperInterface;
+
 use function sprintf;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.

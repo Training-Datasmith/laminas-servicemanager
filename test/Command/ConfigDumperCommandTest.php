@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Command;
 
+use function file_get_contents;
+
 use Laminas\ServiceManager\Command\ConfigDumperCommand;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Tool\ConfigDumperInterface;
@@ -14,11 +16,11 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+
+use function sprintf;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use function file_get_contents;
-use function sprintf;
 
 #[CoversClass(ConfigDumperCommand::class)]
 final class ConfigDumperCommandTest extends TestCase

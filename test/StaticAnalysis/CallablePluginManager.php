@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\StaticAnalysis;
 
-use Laminas\ServiceManager\AbstractPluginManager;
-use Laminas\ServiceManager\Exception\InvalidArgumentException;
-
 use function is_callable;
+
+use Laminas\ServiceManager\AbstractPluginManager;
+
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
 
 /**
  * @template-extends AbstractPluginManager<callable>

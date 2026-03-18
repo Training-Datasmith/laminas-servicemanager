@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
-use JsonException;
-use Laminas\ServiceManager\ConfigProvider;
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-
 use function assert;
 use function class_exists;
 use function file_get_contents;
 use function is_readable;
+
 use function is_string;
 use function json_decode;
-use function realpath;
-use function sprintf;
 
 use const JSON_THROW_ON_ERROR;
+
+use JsonException;
+use Laminas\ServiceManager\ConfigProvider;
+use PHPUnit\Framework\TestCase;
+
+use function realpath;
+
+use ReflectionClass;
+
+use function sprintf;
 
 final class LaminasComponentInstallerIntegrationTest extends TestCase
 {

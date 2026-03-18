@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler;
 
-use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-use Laminas\ServiceManager\Exception\InvalidArgumentException;
-use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
-
 use function array_filter;
+
+use const ARRAY_FILTER_USE_BOTH;
+
 use function array_key_exists;
+
 use function class_exists;
 use function enum_exists;
 use function is_array;
 use function is_string;
-use function sprintf;
 
-use const ARRAY_FILTER_USE_BOTH;
-use const PHP_VERSION_ID;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
+
+use function sprintf;
 
 final readonly class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
 {
@@ -71,7 +73,7 @@ final readonly class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCom
             /** @var array<string,ReflectionBasedAbstractFactory|class-string<ReflectionBasedAbstractFactory>> $servicesUsingReflectionBasedFactory */
             $servicesUsingReflectionBasedFactory = array_filter(
                 $entry['factories'],
-                static fn(mixed $value): bool =>
+                static fn (mixed $value): bool =>
                     $value === ReflectionBasedAbstractFactory::class
                     || $value instanceof ReflectionBasedAbstractFactory,
                 ARRAY_FILTER_USE_BOTH,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
+use function class_exists;
+
 use Laminas\ServiceManager\Command\AheadOfTimeFactoryCreatorCommand;
 use Laminas\ServiceManager\Command\AheadOfTimeFactoryCreatorCommandFactory;
 use Laminas\ServiceManager\Command\ConfigDumperCommand;
@@ -18,9 +20,8 @@ use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParamete
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
 use Laminas\ServiceManager\Tool\FactoryCreatorFactory;
 use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
-use Symfony\Component\Console\Command\Command;
 
-use function class_exists;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * @psalm-import-type ServiceManagerConfiguration from ServiceManager

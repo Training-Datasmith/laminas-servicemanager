@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
+use function get_debug_type;
+
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 
-use function get_debug_type;
 use function sprintf;
 
 /**

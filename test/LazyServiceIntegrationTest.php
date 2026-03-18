@@ -1,9 +1,16 @@
-<?php // phpcs:disable Generic.Files.LineLength.TooLong
+<?php
 
+// phpcs:disable Generic.Files.LineLength.TooLong
 
 declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
+
+use function array_filter;
+use function closedir;
+use function is_dir;
+use function is_file;
+use function iterator_to_array;
 
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
@@ -11,26 +18,28 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
+
+use function mkdir;
+use function opendir;
+
 use PHPUnit\Framework\Attributes\CoversClass;
+
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
+
+use function readdir;
+
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
-use stdClass;
 
-use function array_filter;
-use function closedir;
-use function is_dir;
-use function is_file;
-use function iterator_to_array;
-use function mkdir;
-use function opendir;
-use function readdir;
 use function rmdir;
 use function spl_autoload_functions;
 use function spl_autoload_unregister;
+
+use stdClass;
+
 use function sys_get_temp_dir;
 use function unlink;
 
@@ -302,7 +311,7 @@ final class LazyServiceIntegrationTest extends TestCase
      */
     private function getRegisteredProxyAutoloadFunctions(): array
     {
-        $filter = static fn($autoload): bool => $autoload instanceof AutoloaderInterface;
+        $filter = static fn ($autoload): bool => $autoload instanceof AutoloaderInterface;
 
         return array_filter(spl_autoload_functions(), $filter);
     }

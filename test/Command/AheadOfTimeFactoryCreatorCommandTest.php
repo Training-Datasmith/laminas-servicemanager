@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Command;
 
+use function assert;
+use function file_get_contents;
+use function is_string;
+
 use Laminas\ServiceManager\Command\AheadOfTimeFactoryCreatorCommand;
 use Laminas\ServiceManager\ConfigProvider;
 use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeCompiledFactory;
@@ -15,14 +19,13 @@ use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+
 use PHPUnit\Framework\TestCase;
+
+use function sprintf;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use function assert;
-use function file_get_contents;
-use function is_string;
-use function sprintf;
 
 #[CoversClass(AheadOfTimeFactoryCreatorCommand::class)]
 final class AheadOfTimeFactoryCreatorCommandTest extends TestCase

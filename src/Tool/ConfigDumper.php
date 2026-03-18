@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
+use function array_filter;
+use function array_key_exists;
+use function array_keys;
+use function class_exists;
+use function date;
+use function gettype;
+
+use function implode;
+use function is_array;
+use function is_int;
+use function is_iterable;
+use function is_string;
+
 use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
@@ -11,17 +24,6 @@ use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionParameter;
 
-use function array_filter;
-use function array_key_exists;
-use function array_keys;
-use function class_exists;
-use function date;
-use function gettype;
-use function implode;
-use function is_array;
-use function is_int;
-use function is_iterable;
-use function is_string;
 use function sprintf;
 use function str_repeat;
 use function var_export;
@@ -67,7 +69,7 @@ EOC;
 
         $constructorArguments = array_filter(
             $constructor->getParameters(),
-            static fn(ReflectionParameter $argument): bool => ! $argument->isOptional()
+            static fn (ReflectionParameter $argument): bool => ! $argument->isOptional()
         );
 
         $classConfig = [];

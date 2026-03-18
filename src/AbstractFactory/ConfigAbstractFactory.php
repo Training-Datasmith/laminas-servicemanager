@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\AbstractFactory;
 
-use ArrayObject;
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Psr\Container\ContainerInterface;
-
 use function array_key_exists;
 use function array_map;
 use function array_values;
+
+use ArrayObject;
+
 use function is_array;
 use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
+
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+
+use Psr\Container\ContainerInterface;
 
 final class ConfigAbstractFactory implements AbstractFactoryInterface
 {

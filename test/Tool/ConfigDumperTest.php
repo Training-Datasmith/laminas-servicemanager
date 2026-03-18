@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
+use function file_put_contents;
+
 use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -19,9 +21,9 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
+
 use Psr\Container\ContainerInterface;
 
-use function file_put_contents;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;

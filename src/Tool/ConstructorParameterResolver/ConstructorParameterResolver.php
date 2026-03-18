@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool\ConstructorParameterResolver;
 
+use function array_map;
+
 use ArrayAccess;
+
+use function assert;
+use function class_exists;
+use function in_array;
+use function interface_exists;
+
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionParameter;
 
-use function array_map;
-use function assert;
-use function class_exists;
-use function in_array;
-use function interface_exists;
 use function sprintf;
 
 /**
@@ -57,7 +60,7 @@ final class ConstructorParameterResolver implements ConstructorParameterResolver
         string $className,
         array $aliases
     ): callable {
-        return fn(ReflectionParameter $parameter): FallbackConstructorParameter|ServiceFromContainerConstructorParameter
+        return fn (ReflectionParameter $parameter): FallbackConstructorParameter|ServiceFromContainerConstructorParameter
         => $this->resolveParameter($parameter, $container, $className, $aliases);
     }
 

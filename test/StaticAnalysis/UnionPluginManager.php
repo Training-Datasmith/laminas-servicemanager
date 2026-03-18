@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\StaticAnalysis;
 
-use Laminas\ServiceManager\AbstractPluginManager;
-use Laminas\ServiceManager\Exception\InvalidArgumentException;
-
 use function is_callable;
+
+use Laminas\ServiceManager\AbstractPluginManager;
+
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
 
 /**
  * `laminas-view` HelperPluginManager is providing either an object or a callable and thus needs to provide a union

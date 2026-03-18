@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\AbstractFactory;
 
+use function class_exists;
+
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
 use Psr\Container\ContainerInterface;
+
 use ReflectionClass;
 
-use function class_exists;
 use function sprintf;
 
 /**
