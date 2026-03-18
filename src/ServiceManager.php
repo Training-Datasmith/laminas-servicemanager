@@ -270,12 +270,14 @@ class ServiceManager implements ServiceLocatorInterface
      * {@inheritDoc}
      *
      * @param string|class-string $id
-     * @return bool
      */
     public function has(string $id): bool
     {
         // Check static services and factories first to speedup the most common requests.
-        return $this->staticServiceOrFactoryCanCreate($id) || $this->abstractFactoryCanCreate($id);
+        if ($this->staticServiceOrFactoryCanCreate($id)) {
+            return true;
+        }
+        return $this->abstractFactoryCanCreate($id);
     }
 
     /**
@@ -631,8 +633,6 @@ class ServiceManager implements ServiceLocatorInterface
             } else {
                 $service = $this->createDelegatorFromName($resolvedName, $options);
             }
-        } catch (ContainerExceptionInterface $exception) {
-            throw $exception;
         } catch (Exception $exception) {
             throw new ServiceNotCreatedException(sprintf(
                 'Service with name "%s" could not be created. Reason: %s',
@@ -983,7 +983,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         if (is_string($delegatorFactory)) {
-            $delegatorFactory = new $delegatorFactory();
+            return new $delegatorFactory();
         }
 
         return $delegatorFactory;

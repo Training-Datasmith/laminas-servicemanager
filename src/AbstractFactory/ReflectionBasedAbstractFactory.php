@@ -64,10 +64,8 @@ use function sprintf;
  *
  * Based on the LazyControllerAbstractFactory from laminas-mvc.
  */
-final class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
+final readonly class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
 {
-    private readonly ConstructorParameterResolverInterface $constructorParameterResolver;
-
     /**
      * Allows overriding the internal list of aliases. These should be of the
      * form `class name => well-known service name`; see the documentation for
@@ -75,11 +73,8 @@ final class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      *
      * @param array<string,string> $aliases
      */
-    public function __construct(
-        public readonly array $aliases = [],
-        ?ConstructorParameterResolverInterface $constructorParameterResolver = null,
-    ) {
-        $this->constructorParameterResolver = $constructorParameterResolver ?? new ConstructorParameterResolver();
+    public function __construct(public array $aliases = [], private ?ConstructorParameterResolverInterface $constructorParameterResolver = new ConstructorParameterResolver())
+    {
     }
 
     /**

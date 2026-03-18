@@ -19,10 +19,10 @@ use function sprintf;
 use const ARRAY_FILTER_USE_BOTH;
 use const PHP_VERSION_ID;
 
-final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
+final readonly class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
 {
     public function __construct(
-        private readonly FactoryCreatorInterface $factoryCreator,
+        private FactoryCreatorInterface $factoryCreator,
     ) {
     }
 
@@ -53,14 +53,21 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
         $services = [];
 
         foreach ($config as $key => $entry) {
-            if (! is_string($key) || $key === '' || ! is_array($entry)) {
+            if (! is_string($key)) {
                 continue;
             }
-
-            if (! array_key_exists('factories', $entry) || ! is_array($entry['factories'])) {
+            if ($key === '') {
                 continue;
             }
-
+            if (! is_array($entry)) {
+                continue;
+            }
+            if (! array_key_exists('factories', $entry)) {
+                continue;
+            }
+            if (! is_array($entry['factories'])) {
+                continue;
+            }
             /** @var array<string,ReflectionBasedAbstractFactory|class-string<ReflectionBasedAbstractFactory>> $servicesUsingReflectionBasedFactory */
             $servicesUsingReflectionBasedFactory = array_filter(
                 $entry['factories'],
@@ -115,10 +122,6 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
     {
         if (! class_exists($service)) {
             return false;
-        }
-
-        if (PHP_VERSION_ID < 80100) {
-            return true;
         }
 
         return ! enum_exists($service);
