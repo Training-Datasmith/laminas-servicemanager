@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager;
 
-namespace Laminas\ServiceManager;
-
-use Laminas\ServiceManager\Exception\InvalidServiceException;
-use Psr\Container\ContainerExceptionInterface;
-
+use Laminas\Service_Manager\Exception\Invalid_Service_Exception;
+use Psr\Container\Container_Exception_Interface;
 /**
  * Interface for a plugin manager
  *
@@ -14,7 +12,7 @@ use Psr\Container\ContainerExceptionInterface;
  *
  * @template InstanceType
  */
-interface PluginManagerInterface extends ServiceLocatorInterface
+interface Plugin_Manager_Interface extends Service_Locator_Interface
 {
     /**
      * Validate an instance
@@ -25,7 +23,6 @@ interface PluginManagerInterface extends ServiceLocatorInterface
      * @psalm-assert InstanceType $instance
      */
     public function validate(mixed $instance): void;
-
     /**
      * @template TRequestedInstance extends InstanceType
      * @psalm-param class-string<TRequestedInstance>|string $id Service name of plugin to retrieve.
@@ -37,7 +34,6 @@ interface PluginManagerInterface extends ServiceLocatorInterface
      *     plugin context.
      */
     public function get(string $id): mixed;
-
     /**
      * Build a service by its name, using optional options (such services are NEVER cached).
      *

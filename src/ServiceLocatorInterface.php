@@ -1,19 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager;
 
-namespace Laminas\ServiceManager;
-
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-
+use Laminas\Service_Manager\Exception\Service_Not_Created_Exception;
+use Laminas\Service_Manager\Exception\Service_Not_Found_Exception;
+use Psr\Container\Container_Exception_Interface;
+use Psr\Container\Container_Interface;
+use Psr\Container\Not_Found_Exception_Interface;
 /**
  * Interface for service locator
  */
-interface ServiceLocatorInterface extends ContainerInterface
+interface Service_Locator_Interface extends Container_Interface
 {
     /**
      * Builds a service by its name, using optional options (such services are NEVER cached).
@@ -28,7 +26,6 @@ interface ServiceLocatorInterface extends ContainerInterface
      * @throws ContainerExceptionInterface If any other error occurs.
      */
     public function build(string $name, ?array $options = null): mixed;
-
     /**
      * Finds an entry of the container by its identifier and returns it.
      *

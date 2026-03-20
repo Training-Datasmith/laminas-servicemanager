@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Factory;
 
-namespace Laminas\ServiceManager\Factory;
-
-use Psr\Container\ContainerInterface;
-
+use Psr\Container\Container_Interface;
 /**
  * Interface for an abstract factory.
  *
@@ -16,10 +14,10 @@ use Psr\Container\ContainerInterface;
  * Starting from ServiceManager v3, remember that you can also attach multiple
  * names to the same factory, which reduces the need for abstract factories.
  */
-interface AbstractFactoryInterface extends FactoryInterface
+interface Abstract_Factory_Interface extends Factory_Interface
 {
     /**
      * Can the factory create an instance for the service?
      */
-    public function canCreate(ContainerInterface $container, string $requestedName): bool;
+    public function can_create(Container_Interface $container, string $requested_name): bool;
 }

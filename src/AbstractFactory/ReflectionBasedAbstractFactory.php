@@ -1,21 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\ServiceManager\AbstractFactory;
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Abstract_Factory;
 
 use function class_exists;
-
-use Laminas\ServiceManager\Exception\InvalidArgumentException;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
-use Psr\Container\ContainerInterface;
-
+use Laminas\Service_Manager\Exception\InvalidArgumentException;
+use Laminas\Service_Manager\Factory\Abstract_Factory_Interface;
+use Laminas\Service_Manager\Tool\Constructor_Parameter_Resolver\Constructor_Parameter_Resolver;
+use Laminas\Service_Manager\Tool\Constructor_Parameter_Resolver\Constructor_Parameter_Resolver_Interface;
+use Psr\Container\Container_Interface;
 use ReflectionClass;
-
 use function sprintf;
-
 /**
  * Reflection-based factory.
  *
@@ -66,7 +61,7 @@ use function sprintf;
  *
  * Based on the LazyControllerAbstractFactory from laminas-mvc.
  */
-final readonly class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
+final readonly class Reflection_Based_Abstract_Factory implements Abstract_Factory_Interface
 {
     /**
      * Allows overriding the internal list of aliases. These should be of the
@@ -75,38 +70,28 @@ final readonly class ReflectionBasedAbstractFactory implements AbstractFactoryIn
      *
      * @param array<string,string> $aliases
      */
-    public function __construct(public array $aliases = [], private ?ConstructorParameterResolverInterface $constructorParameterResolver = new ConstructorParameterResolver())
+    public function __construct(public array $aliases = [], private ?Constructor_Parameter_Resolver_Interface $constructor_parameter_resolver = new Constructor_Parameter_Resolver())
     {
     }
-
     /**
      * {@inheritDoc}
      */
-    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): object
+    public function __invoke(Container_Interface $container, string $requested_name, ?array $options = null): object
     {
-        if (! class_exists($requestedName)) {
+        if (!class_exists($requested_name)) {
             throw new InvalidArgumentException(sprintf('%s can only be used with class names.', self::class));
         }
-
-        $parameters = $this->constructorParameterResolver->resolveConstructorParameters(
-            $requestedName,
-            $container,
-            $this->aliases
-        );
-
-        return new $requestedName(...$parameters);
+        $parameters = $this->constructor_parameter_resolver->resolve_constructor_parameters($requested_name, $container, $this->aliases);
+        return new $requested_name(...$parameters);
     }
-
     /** {@inheritDoc} */
-    public function canCreate(ContainerInterface $container, string $requestedName): bool
+    public function can_create(Container_Interface $container, string $requested_name): bool
     {
-        return class_exists($requestedName) && $this->canCallConstructor($requestedName);
+        return class_exists($requested_name) && $this->can_call_constructor($requested_name);
     }
-
-    private function canCallConstructor(string $requestedName): bool
+    private function can_call_constructor(string $requested_name): bool
     {
-        $constructor = (new ReflectionClass($requestedName))->getConstructor();
-
-        return $constructor === null || $constructor->isPublic();
+        $constructor = (new ReflectionClass($requested_name))->get_constructor();
+        return $constructor === null || $constructor->is_public();
     }
 }

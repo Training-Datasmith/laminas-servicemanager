@@ -1,24 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\ServiceManager;
+declare (strict_types=1);
+namespace Laminas\Service_Manager;
 
 use function class_exists;
-
-use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
-use Laminas\ServiceManager\Exception\CyclicAliasException;
-use Laminas\ServiceManager\Exception\InvalidServiceException;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\Initializer\InitializerInterface;
-use Laminas\Stdlib\ArrayUtils;
-
-use Psr\Container\ContainerInterface;
-
+use Laminas\Service_Manager\Exception\Container_Modifications_Not_Allowed_Exception;
+use Laminas\Service_Manager\Exception\Cyclic_Alias_Exception;
+use Laminas\Service_Manager\Exception\Invalid_Service_Exception;
+use Laminas\Service_Manager\Factory\Abstract_Factory_Interface;
+use Laminas\Service_Manager\Factory\Delegator_Factory_Interface;
+use Laminas\Service_Manager\Factory\Factory_Interface;
+use Laminas\Service_Manager\Initializer\Initializer_Interface;
+use Laminas\Stdlib\Array_Utils;
+use Psr\Container\Container_Interface;
 use function sprintf;
-
 /**
  * Abstract plugin manager.
  *
@@ -37,22 +32,19 @@ use function sprintf;
  * @psalm-import-type InitializersConfiguration from ServiceManager
  * @psalm-import-type LazyServicesConfiguration from ServiceManager
  */
-abstract class AbstractPluginManager implements PluginManagerInterface
+abstract class Abstract_Plugin_Manager implements Plugin_Manager_Interface
 {
     /**
      * Whether or not to auto-add a FQCN as an invokable if it exists.
      */
-    protected bool $autoAddInvokableClass = true;
-
-    protected bool $sharedByDefault = true;
-
+    protected bool $auto_add_invokable_class = true;
+    protected bool $shared_by_default = true;
     /**
      * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
      *
      * @var AbstractFactoryInterface[]
      */
-    protected array $abstractFactories = [];
-
+    protected array $abstract_factories = [];
     /**
      * A list of aliases
      *
@@ -63,14 +55,12 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @var string[]
      */
     protected array $aliases = [];
-
     /**
      * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
      *
      * @var DelegatorsConfiguration
      */
     protected array $delegators = [];
-
     /**
      * A list of factories (either as string name or callable)
      *
@@ -79,21 +69,18 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @var FactoriesConfiguration
      */
     protected array $factories = [];
-
     /**
      * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
      *
      * @var InitializersConfiguration
      */
     protected array $initializers = [];
-
     /**
      * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
      *
      * @var LazyServicesConfiguration
      */
-    protected array $lazyServices = [];
-
+    protected array $lazy_services = [];
     /**
      * A list of already loaded services (this act as a local cache)
      *
@@ -102,7 +89,6 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @var array<string,mixed>
      */
     protected array $services = [];
-
     /**
      * Enable/disable shared instances by service name.
      *
@@ -118,35 +104,17 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @var array<string,bool>
      */
     protected array $shared = [];
-
-    private readonly ServiceManager $plugins;
-
+    private readonly Service_Manager $plugins;
     /**
      * @param ServiceManagerConfiguration $config
      */
-    public function __construct(
-        ContainerInterface $creationContext,
-        array $config = [],
-    ) {
-        $this->plugins = new ServiceManager([
-            'shared_by_default' => $this->sharedByDefault,
-        ], $creationContext);
-
+    public function __construct(Container_Interface $creation_context, array $config = [])
+    {
+        $this->plugins = new Service_Manager(['shared_by_default' => $this->shared_by_default], $creation_context);
         /** @var ServiceManagerConfiguration $config */
-        $config = ArrayUtils::merge([
-            'factories'          => $this->factories,
-            'abstract_factories' => $this->abstractFactories,
-            'aliases'            => $this->aliases,
-            'services'           => $this->services,
-            'lazy_services'      => $this->lazyServices,
-            'shared'             => $this->shared,
-            'delegators'         => $this->delegators,
-            'initializers'       => $this->initializers,
-        ], $config);
-
+        $config = Array_Utils::merge(['factories' => $this->factories, 'abstract_factories' => $this->abstract_factories, 'aliases' => $this->aliases, 'services' => $this->services, 'lazy_services' => $this->lazy_services, 'shared' => $this->shared, 'delegators' => $this->delegators, 'initializers' => $this->initializers], $config);
         $this->configure($config);
     }
-
     /**
      * @param ServiceManagerConfiguration $config
      * @throws ContainerModificationsNotAllowedException If the allow override flag has been toggled off, and a
@@ -162,49 +130,38 @@ abstract class AbstractPluginManager implements PluginManagerInterface
                 $this->validate($service);
             }
         }
-
         // phpcs:disable SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
         /** @var ServiceManagerConfiguration $config */
         $this->plugins->configure($config);
         // phpcs:enable SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-
         return $this;
     }
-
     /**
      * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param string|class-string<InstanceType> $name
      * @param InstanceType $service
      */
-    public function setService(string $name, mixed $service): void
+    public function set_service(string $name, mixed $service): void
     {
         $this->validate($service);
-        $this->plugins->setService($name, $service);
+        $this->plugins->set_service($name, $service);
     }
-
     /**
      * {@inheritDoc}
      */
     public function get(string $id): mixed
     {
-        if (! $this->has($id)) {
-            if (! $this->autoAddInvokableClass || ! class_exists($id)) {
-                throw new Exception\ServiceNotFoundException(sprintf(
-                    'A plugin by the name "%s" was not found in the plugin manager %s',
-                    $id,
-                    static::class
-                ));
+        if (!$this->has($id)) {
+            if (!$this->auto_add_invokable_class || !class_exists($id)) {
+                throw new Exception\Service_Not_Found_Exception(sprintf('A plugin by the name "%s" was not found in the plugin manager %s', $id, static::class));
             }
-
-            $this->plugins->setFactory($id, Factory\InvokableFactory::class);
+            $this->plugins->set_factory($id, Factory\Invokable_Factory::class);
         }
-
         $instance = $this->plugins->get($id);
         $this->validate($instance);
         return $instance;
     }
-
     /**
      * {@inheritDoc}
      */
@@ -212,7 +169,6 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     {
         return $this->plugins->has($id);
     }
-
     /**
      * {@inheritDoc}
      */
@@ -220,10 +176,8 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     {
         $plugin = $this->plugins->build($name, $options);
         $this->validate($plugin);
-
         return $plugin;
     }
-
     /**
      * Add an alias.
      *
@@ -232,11 +186,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @throws ContainerModificationsNotAllowedException If $alias already
      *     exists as a service and overrides are disallowed.
      */
-    public function setAlias(string $alias, string $target): void
+    public function set_alias(string $alias, string $target): void
     {
-        $this->plugins->setAlias($alias, $target);
+        $this->plugins->set_alias($alias, $target);
     }
-
     /**
      * Add an invokable class mapping.
      *
@@ -247,11 +200,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setInvokableClass(string $name, string|null $class = null): void
+    public function set_invokable_class(string $name, string|null $class = null): void
     {
-        $this->plugins->setInvokableClass($name, $class);
+        $this->plugins->set_invokable_class($name, $class);
     }
-
     /**
      * Specify a factory for a given service name.
      *
@@ -261,11 +213,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setFactory(string $name, string|callable|Factory\FactoryInterface $factory): void
+    public function set_factory(string $name, string|callable|Factory\Factory_Interface $factory): void
     {
-        $this->plugins->setFactory($name, $factory);
+        $this->plugins->set_factory($name, $factory);
     }
-
     /**
      * Create a lazy service mapping to a class.
      *
@@ -275,11 +226,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @param null|class-string $class Class to which to map; if not provided, $name
      *     will be used for the mapping.
      */
-    public function mapLazyService(string $name, string|null $class = null): void
+    public function map_lazy_service(string $name, string|null $class = null): void
     {
-        $this->plugins->mapLazyService($name, $class);
+        $this->plugins->map_lazy_service($name, $class);
     }
-
     /**
      * Add an abstract factory for resolving services.
      *
@@ -289,11 +239,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      *     instance or class name.
      * @psalm-param class-string<AbstractFactoryInterface>|AbstractFactoryInterface $factory
      */
-    public function addAbstractFactory(string|AbstractFactoryInterface $factory): void
+    public function add_abstract_factory(string|Abstract_Factory_Interface $factory): void
     {
-        $this->plugins->addAbstractFactory($factory);
+        $this->plugins->add_abstract_factory($factory);
     }
-
     /**
      * Add a delegator for a given service.
      *
@@ -303,11 +252,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @param string|callable|DelegatorFactoryInterface $factory Delegator factory to assign.
      * @psalm-param class-string<DelegatorFactoryInterface>|DelegatorCallable $factory
      */
-    public function addDelegator(string $name, string|callable|DelegatorFactoryInterface $factory): void
+    public function add_delegator(string $name, string|callable|Delegator_Factory_Interface $factory): void
     {
-        $this->plugins->addDelegator($name, $factory);
+        $this->plugins->add_delegator($name, $factory);
     }
-
     /**
      * Add an initializer.
      *
@@ -315,11 +263,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      *
      * @psalm-param class-string<InitializerInterface>|InitializerCallable|InitializerInterface $initializer
      */
-    public function addInitializer(string|callable|InitializerInterface $initializer): void
+    public function add_initializer(string|callable|Initializer_Interface $initializer): void
     {
-        $this->plugins->addInitializer($initializer);
+        $this->plugins->add_initializer($initializer);
     }
-
     /**
      * Add a service sharing rule.
      *
@@ -329,18 +276,16 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setShared(string $name, bool $flag): void
+    public function set_shared(string $name, bool $flag): void
     {
-        $this->plugins->setShared($name, $flag);
+        $this->plugins->set_shared($name, $flag);
     }
-
-    public function getAllowOverride(): bool
+    public function get_allow_override(): bool
     {
-        return $this->plugins->getAllowOverride();
+        return $this->plugins->get_allow_override();
     }
-
-    public function setAllowOverride(bool $flag): void
+    public function set_allow_override(bool $flag): void
     {
-        $this->plugins->setAllowOverride($flag);
+        $this->plugins->set_allow_override($flag);
     }
 }

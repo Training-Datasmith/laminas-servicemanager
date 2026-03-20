@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Laminas\ServiceManager\Exception;
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Exception;
 
 use function array_filter;
 use function array_keys;
@@ -13,135 +12,94 @@ use function reset;
 use function serialize;
 use function sort;
 use function sprintf;
-
 /** @final */
-class CyclicAliasException extends InvalidArgumentException
+class Cyclic_Alias_Exception extends InvalidArgumentException
 {
     /**
      * @param string   $alias conflicting alias key
      * @param array<string,string> $aliases map of referenced services, indexed by alias name
      */
-    public static function fromCyclicAlias(string $alias, array $aliases): self
+    public static function from_cyclic_alias(string $alias, array $aliases): self
     {
-        $cycle  = $alias;
+        $cycle = $alias;
         $cursor = $alias;
         while (isset($aliases[$cursor]) && $aliases[$cursor] !== $alias) {
             $cursor = $aliases[$cursor];
             $cycle .= ' -> ' . $cursor;
         }
         $cycle .= ' -> ' . $alias . "\n";
-
-        return new self(sprintf(
-            "A cycle was detected within the aliases definitions:\n%s",
-            $cycle
-        ));
+        return new self(sprintf("A cycle was detected within the aliases definitions:\n%s", $cycle));
     }
-
     /**
      * @param array<string,string> $aliases map of referenced services, indexed by alias name (string)
      */
-    public static function fromAliasesMap(array $aliases): self
+    public static function from_aliases_map(array $aliases): self
     {
-        $detectedCycles = array_filter(array_map(
-            static fn (string $alias): ?array => self::getCycleFor($aliases, $alias),
-            array_keys($aliases)
-        ));
-
-        if (! $detectedCycles) {
-            return new self(sprintf(
-                "A cycle was detected within the following aliases map:\n\n%s",
-                self::printReferencesMap($aliases)
-            ));
+        $detected_cycles = array_filter(array_map(static fn(string $alias): ?array => self::get_cycle_for($aliases, $alias), array_keys($aliases)));
+        if (!$detected_cycles) {
+            return new self(sprintf("A cycle was detected within the following aliases map:\n\n%s", self::print_references_map($aliases)));
         }
-
-        return new self(sprintf(
-            "Cycles were detected within the provided aliases:\n\n%s\n\n"
-            . "The cycle was detected in the following alias map:\n\n%s",
-            self::printCycles(self::deDuplicateDetectedCycles($detectedCycles)),
-            self::printReferencesMap($aliases)
-        ));
+        return new self(sprintf("Cycles were detected within the provided aliases:\n\n%s\n\n" . "The cycle was detected in the following alias map:\n\n%s", self::print_cycles(self::de_duplicate_detected_cycles($detected_cycles)), self::print_references_map($aliases)));
     }
-
     /**
      * Retrieves the cycle detected for the given $alias, or `null` if no cycle was detected
      *
      * @param array<string,string> $aliases
      * @return array<string,true>|null
      */
-    private static function getCycleFor(array $aliases, string $alias): ?array
+    private static function get_cycle_for(array $aliases, string $alias): ?array
     {
-        $cycleCandidate = [];
-        $targetName     = $alias;
-
-        while (isset($aliases[$targetName])) {
-            if (isset($cycleCandidate[$targetName])) {
-                return $cycleCandidate;
+        $cycle_candidate = [];
+        $target_name = $alias;
+        while (isset($aliases[$target_name])) {
+            if (isset($cycle_candidate[$target_name])) {
+                return $cycle_candidate;
             }
-
-            $cycleCandidate[$targetName] = true;
-            $targetName                  = $aliases[$targetName];
+            $cycle_candidate[$target_name] = true;
+            $target_name = $aliases[$target_name];
         }
-
         return null;
     }
-
     /**
      * @param array<string,string> $aliases
      */
-    private static function printReferencesMap(array $aliases): string
+    private static function print_references_map(array $aliases): string
     {
         $map = [];
-
         foreach ($aliases as $alias => $reference) {
             $map[] = '"' . $alias . '" => "' . $reference . '"';
         }
-
         return "[\n" . implode("\n", $map) . "\n]";
     }
-
     /**
      * @param string[][] $detectedCycles
      */
-    private static function printCycles(array $detectedCycles): string
+    private static function print_cycles(array $detected_cycles): string
     {
-        return "[\n" . implode("\n", array_map(self::printCycle(...), $detectedCycles)) . "\n]";
+        return "[\n" . implode("\n", array_map(self::print_cycle(...), $detected_cycles)) . "\n]";
     }
-
     /**
      * @param string[] $detectedCycle
      */
-    private static function printCycle(array $detectedCycle): string
+    private static function print_cycle(array $detected_cycle): string
     {
-        $fullCycle   = array_keys($detectedCycle);
-        $fullCycle[] = reset($fullCycle);
-
-        return implode(
-            ' => ',
-            array_map(
-                static fn ($cycle): string => '"' . $cycle . '"',
-                $fullCycle
-            )
-        );
+        $full_cycle = array_keys($detected_cycle);
+        $full_cycle[] = reset($full_cycle);
+        return implode(' => ', array_map(static fn($cycle): string => '"' . $cycle . '"', $full_cycle));
     }
-
     /**
      * @param bool[][] $detectedCycles
      * @return bool[][] de-duplicated
      */
-    private static function deDuplicateDetectedCycles(array $detectedCycles): array
+    private static function de_duplicate_detected_cycles(array $detected_cycles): array
     {
-        $detectedCyclesByHash = [];
-
-        foreach ($detectedCycles as $detectedCycle) {
-            $cycleAliases = array_keys($detectedCycle);
-
-            sort($cycleAliases);
-
-            $hash = serialize($cycleAliases);
-
-            $detectedCyclesByHash[$hash] ??= $detectedCycle;
+        $detected_cycles_by_hash = [];
+        foreach ($detected_cycles as $detected_cycle) {
+            $cycle_aliases = array_keys($detected_cycle);
+            sort($cycle_aliases);
+            $hash = serialize($cycle_aliases);
+            $detected_cycles_by_hash[$hash] ??= $detected_cycle;
         }
-
-        return array_values($detectedCyclesByHash);
+        return array_values($detected_cycles_by_hash);
     }
 }

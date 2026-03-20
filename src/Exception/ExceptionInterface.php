@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Exception;
 
-namespace Laminas\ServiceManager\Exception;
-
-use Psr\Container\ContainerExceptionInterface;
-
+use Psr\Container\Container_Exception_Interface;
 /**
  * Base exception for all Laminas\ServiceManager exceptions.
  */
-interface ExceptionInterface extends ContainerExceptionInterface
+interface Exception_Interface extends Container_Exception_Interface
 {
 }

@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Tool\Ahead_Of_Time_Factory_Compiler;
 
-namespace Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler;
-
-interface AheadOfTimeFactoryCompilerInterface
+interface Ahead_Of_Time_Factory_Compiler_Interface
 {
     /**
      * @return list<AheadOfTimeCompiledFactory>

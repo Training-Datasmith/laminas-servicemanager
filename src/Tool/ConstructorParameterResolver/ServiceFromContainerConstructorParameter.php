@@ -1,16 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Tool\Constructor_Parameter_Resolver;
 
-namespace Laminas\ServiceManager\Tool\ConstructorParameterResolver;
-
-final class ServiceFromContainerConstructorParameter
+final class Service_From_Container_Constructor_Parameter
 {
     /**
      * @param non-empty-string $serviceName
      */
-    public function __construct(
-        public string $serviceName,
-    ) {
+    public function __construct(public string $service_name)
+    {
     }
 }

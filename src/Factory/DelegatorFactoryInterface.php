@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Factory;
 
-namespace Laminas\ServiceManager\Factory;
-
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-
+use Laminas\Service_Manager\Exception\Service_Not_Created_Exception;
+use Laminas\Service_Manager\Exception\Service_Not_Found_Exception;
+use Psr\Container\Container_Exception_Interface;
+use Psr\Container\Container_Interface;
 /**
  * Delegator factory interface.
  *
@@ -17,7 +15,7 @@ use Psr\Container\ContainerInterface;
  * decorating the instantiation of a service instance (for instance, to
  * provide optional dependencies via setters, etc.).
  */
-interface DelegatorFactoryInterface
+interface Delegator_Factory_Interface
 {
     /**
      * A factory that creates delegates of a given service
@@ -27,10 +25,5 @@ interface DelegatorFactoryInterface
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
      * @throws ContainerExceptionInterface If any other error occurs.
      */
-    public function __invoke(
-        ContainerInterface $container,
-        string $name,
-        callable $callback,
-        ?array $options = null
-    ): mixed;
+    public function __invoke(Container_Interface $container, string $name, callable $callback, ?array $options = null): mixed;
 }

@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Laminas\Service_Manager\Factory;
 
-namespace Laminas\ServiceManager\Factory;
-
-use Psr\Container\ContainerInterface;
-
+use Psr\Container\Container_Interface;
 /**
  * Factory for instantiating classes with no dependencies or which accept a single array.
  *
@@ -17,11 +15,11 @@ use Psr\Container\ContainerInterface;
  * It replaces the "invokables" and "invokable class" functionality of the v2
  * service manager.
  */
-final class InvokableFactory implements FactoryInterface
+final class Invokable_Factory implements Factory_Interface
 {
     /** {@inheritDoc} */
-    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): mixed
+    public function __invoke(Container_Interface $container, string $requested_name, ?array $options = null): mixed
     {
-        return null === $options ? new $requestedName() : new $requestedName($options);
+        return null === $options ? new $requested_name() : new $requested_name($options);
     }
 }
