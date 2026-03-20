@@ -65,13 +65,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Laminas\\ServiceManager\\": "src/"
+            "Laminas\\Service_Manager\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LaminasTest\\ServiceManager\\": "test/",
-            "LaminasBench\\ServiceManager\\": "benchmarks/"
+            "Laminas_Test\\Service_Manager\\": "test/",
+            "Laminas_Bench\\Service_Manager\\": "benchmarks/"
         }
     },
     "scripts": {
