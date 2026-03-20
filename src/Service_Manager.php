@@ -177,7 +177,20 @@ class Service_Manager implements Service_Locator_Interface
         $this->creation_context = $creation_context ?? $this;
         $this->configure($config);
     }
-    /** {@inheritDoc} */
+    /**
+     * Retrieve a service by identifier, using the shared instance cache where possible.
+     *
+     * Resolution order: shared cache → static service/factory → abstract factories.
+     * Aliases are resolved before cache lookup.
+     *
+     * @param string $id The service name or class-string to retrieve
+     * @return mixed The service instance
+     * @throws Service_Not_Found_Exception   If no factory can satisfy $id.
+     * @throws Service_Not_Created_Exception If the factory throws during construction.
+     * @complexity O(1) for cached services; O(n) for abstract-factory resolution
+     *             where n is the number of registered abstract factories.
+     * @see build() For uncached construction with per-call options.
+     */
     public function get(string $id): mixed
     {
         // We start by checking if we have cached the requested service;
@@ -224,7 +237,20 @@ class Service_Manager implements Service_Locator_Interface
         /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
         return $service;
     }
-    /** {@inheritDoc} */
+    /**
+     * Create a fresh, uncached service instance with optional per-call options.
+     *
+     * Does not consult or populate the shared instance cache. The alias table
+     * is resolved before factory lookup.
+     *
+     * @param string            $name    The service name or class-string to construct
+     * @param array<mixed>|null $options Optional construction-time configuration
+     * @return mixed The newly constructed service instance
+     * @throws Service_Not_Found_Exception   If no factory can satisfy $name.
+     * @throws Service_Not_Created_Exception If the factory throws during construction.
+     * @complexity O(n) where n is the number of registered abstract factories (worst case)
+     * @see get() For cached service retrieval.
+     */
     public function build(string $name, ?array $options = null): mixed
     {
         // We never cache when using "build".
@@ -233,9 +259,15 @@ class Service_Manager implements Service_Locator_Interface
         return $this->do_create($name, $options);
     }
     /**
-     * {@inheritDoc}
+     * Check whether the container can produce a service for the given identifier.
      *
-     * @param string|class-string $id
+     * Checks static services and registered factories first (O(1)), then falls
+     * through to abstract factories (O(n)). Alias names are resolved transparently.
+     *
+     * @param string $id The service name or class-string to check
+     * @return bool True if the container can construct or return the service
+     * @complexity O(1) for named services and factories; O(n) for abstract factory fallback
+     * @see get() To actually retrieve the service.
      */
     public function has(string $id): bool
     {

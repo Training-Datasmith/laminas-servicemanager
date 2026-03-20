@@ -5,19 +5,31 @@ namespace Laminas\Service_Manager\Factory;
 
 use Psr\Container\Container_Interface;
 /**
- * Interface for an abstract factory.
+ * Interface for an abstract (catch-all) factory.
  *
- * An abstract factory extends the factory interface, but also has an
- * additional "canCreate" method, which is called to check if the abstract
- * factory has the ability to create an instance for the given service. You
- * should limit the number of abstract factories to ensure good performance.
- * Starting from ServiceManager v3, remember that you can also attach multiple
- * names to the same factory, which reduces the need for abstract factories.
+ * An abstract factory is polled only after no concrete factory is found for a
+ * requested service name. `can_create()` is called first; only if it returns
+ * true will `__invoke()` be called to construct the service.
+ *
+ * Performance note: every registered abstract factory is checked on every
+ * cache-miss lookup. Limit abstract factories to avoid O(n) overhead on
+ * service resolution.
+ *
+ * @since 3.0.0
  */
 interface Abstract_Factory_Interface extends Factory_Interface
 {
     /**
-     * Can the factory create an instance for the service?
+     * Determine whether this factory can create a service for the given name.
+     *
+     * Implementations should be fast (no side effects) as this method is called
+     * on every cache-miss before any service is constructed.
+     *
+     * @param Container_Interface $container      The service container
+     * @param string              $requested_name The service name to test
+     * @return bool True if this factory can create a service for $requested_name
+     * @complexity O(1) — implementations must avoid expensive operations
+     * @since 3.0.0
      */
     public function can_create(Container_Interface $container, string $requested_name): bool;
 }
